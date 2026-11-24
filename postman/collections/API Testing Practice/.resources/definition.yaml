@@ -1,0 +1,5 @@
+$kind: collection
+description: |-
+  My beginner API testing project using Postman.  
+  Practising HTTP methods, response validation,  
+  positive and negative testing.
