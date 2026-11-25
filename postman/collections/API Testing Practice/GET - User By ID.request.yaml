@@ -1,0 +1,5 @@
+$kind: http-request
+description: ""
+url: "\thttps://jsonplaceholder.typicode.com/users/1"
+method: GET
+order: 2000
