@@ -2,4 +2,58 @@ $kind: http-request
 description: ""
 url: "\thttps://jsonplaceholder.typicode.com/users/1"
 method: GET
+scripts:
+  - type: afterResponse
+    code: "\r
+
+      pm.test(\"Status code is 200\", function () {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is below 5000ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(5000);\r
+
+      });\r
+
+      \r
+
+      const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"User ID is 1\", function () {\r
+
+      \    pm.expect(response.id).to.eql(1);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User name is Leanne Graham\", function () {\r
+
+      \    pm.expect(response.name).to.eql(\"Leanne Graham\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User email is present\", function () {\r
+
+      \    pm.expect(response.email).to.be.a(\"string\").and.not.empty;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Username is present\", function () {\r
+
+      \    pm.expect(response.username).to.be.a(\"string\").and.not.empty;\r
+
+      });\r\n"
+    language: text/javascript
 order: 2000
