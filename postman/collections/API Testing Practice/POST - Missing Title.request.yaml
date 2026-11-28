@@ -1,0 +1,63 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"body\": \"Testing an API request without a title\",\r
+
+    \    \"userId\": 1\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "\r
+
+      pm.test(\"Status code is 201 Created\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Title is missing from response\", function () {\r
+
+      \    pm.expect(response).to.not.have.property(\"title\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Body is returned correctly\", function () {\r
+
+      \    pm.expect(response.body).to.eql(\r
+
+      \        \"Testing an API request without a title\"\r
+
+      \    );\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User ID is correct\", function () {\r
+
+      \    pm.expect(response.userId).to.eql(1);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"ID is generated\", function () {\r
+
+      \    pm.expect(response.id).to.be.a(\"number\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 5000
