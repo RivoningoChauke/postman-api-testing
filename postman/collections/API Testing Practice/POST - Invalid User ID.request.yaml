@@ -1,0 +1,59 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Testing Invalid User ID\",\r
+
+    \    \"body\": \"Testing API validation with an invalid user ID\",\r
+
+    \    \"userId\": \"invalid\"\r
+
+    }"
+scripts:
+  - type: afterResponse
+    code: "const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Status code is 201 Created\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Title is returned correctly\", function () {\r
+
+      \    pm.expect(response.title).to.eql(\"Testing Invalid User ID\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Body is returned correctly\", function () {\r
+
+      \    pm.expect(response.body).to.eql(\"Testing API validation with an invalid user ID\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User ID is returned as a string\", function () {\r
+
+      \    pm.expect(response.userId).to.be.a(\"string\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Generated ID is a number\", function () {\r
+
+      \    pm.expect(response.id).to.be.a(\"number\");\r
+
+      });"
+    language: text/javascript
+order: 8000
