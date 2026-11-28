@@ -1,0 +1,47 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"title\": \"Testing Invalid JSON\",\r
+
+    \    \"body\": \"Testing malformed JSON\",\r
+
+    \    \"userId\": 1,"
+scripts:
+  - type: afterResponse
+    code: "\r
+
+      pm.test(\"Status code is 500 Internal Server Error\", function () {\r
+
+      \    pm.response.to.have.status(500);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains JSON syntax error\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.include(\"SyntaxError\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Error identifies invalid JSON\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.include(\"JSON\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response identifies the parsing issue\", function () {\r
+
+      \    pm.expect(pm.response.text()).to.include(\"Expected double-quoted property name\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 10000

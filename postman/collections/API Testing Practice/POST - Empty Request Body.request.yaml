@@ -1,0 +1,57 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+body:
+  type: json
+  content: ""
+scripts:
+  - type: afterResponse
+    code: "\r
+
+      pm.test(\"Status code is 201 Created\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response body is valid JSON\", function () {\r
+
+      \    pm.expect(function () {\r
+
+      \        pm.response.json();\r
+
+      \    }).to.not.throw();\r
+
+      });\r
+
+      \r
+
+      const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Generated ID is present\", function () {\r
+
+      \    pm.expect(response).to.have.property(\"id\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Generated ID is a number\", function () {\r
+
+      \    pm.expect(response.id).to.be.a(\"number\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response contains only the generated ID\", function () {\r
+
+      \    pm.expect(Object.keys(response)).to.have.lengthOf(1);\r
+
+      });\r\n"
+    language: text/javascript
+order: 9000
