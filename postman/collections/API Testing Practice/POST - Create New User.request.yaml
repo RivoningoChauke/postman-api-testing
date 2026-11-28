@@ -1,0 +1,79 @@
+$kind: http-request
+url: https://jsonplaceholder.typicode.com/posts
+method: POST
+body:
+  type: json
+  content: "\r
+
+    {\r
+
+    \    \"title\": \"My First POST Request\",\r
+
+    \    \"body\": \"Learning API testing with Postman\",\r
+
+    \    \"userId\": 1\r
+
+    }\r\n"
+scripts:
+  - type: afterResponse
+    code: "\r
+
+      pm.test(\"Status code is 201 Created\", function () {\r
+
+      \    pm.response.to.have.status(201);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time is below 5000ms\", function () {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(5000);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response is valid JSON\", function () {\r
+
+      \    pm.response.to.be.json;\r
+
+      });\r
+
+      \r
+
+      const response = pm.response.json();\r
+
+      \r
+
+      pm.test(\"Post title is correct\", function () {\r
+
+      \    pm.expect(response.title).to.eql(\"My First POST Request\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Post body is correct\", function () {\r
+
+      \    pm.expect(response.body).to.eql(\"Learning API testing with Postman\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"User ID is correct\", function () {\r
+
+      \    pm.expect(response.userId).to.eql(1);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"New post has a generated ID\", function () {\r
+
+      \    pm.expect(response.id).to.be.a(\"number\");\r
+
+      });\r\n"
+    language: text/javascript
+order: 4000
